@@ -7,11 +7,7 @@ on:
     branches: [ main ]
 
 jobs:
-  build:
-    strategy:
-      matrix:
-        xcode_version: ['13.1']
-        
+  build:        
     runs-on: macos-latest
 
     steps:
