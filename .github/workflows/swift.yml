@@ -1,0 +1,22 @@
+name: Swift
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        xcode_version: ['13.1']
+        
+    runs-on: macos-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build
+      run: xcodebuild build
+    - name: Run tests
+      run: xcodebuild test -scheme XCCleaner
