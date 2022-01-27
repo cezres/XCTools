@@ -1,4 +1,4 @@
-name: Swift
+name: CI
 
 on:
   push:
@@ -12,7 +12,5 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Build
-      run: xcodebuild -scheme XCCleaner clean build CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY=""
     - name: Run tests
       run: xcodebuild test -scheme XCCleaner CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY=""
