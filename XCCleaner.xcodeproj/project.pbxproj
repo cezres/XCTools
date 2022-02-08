@@ -17,6 +17,8 @@
 		7A0EC7F9279FFD03005501F2 /* XCCleanerKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 7A0EC7E9279FFD03005501F2 /* XCCleanerKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		7A0EC7FC279FFD03005501F2 /* XCCleanerKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A0EC7E7279FFD03005501F2 /* XCCleanerKit.framework */; };
 		7A0EC7FD279FFD03005501F2 /* XCCleanerKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 7A0EC7E7279FFD03005501F2 /* XCCleanerKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		7A4A9DDC27B2127800633E0C /* SQLite in Frameworks */ = {isa = PBXBuildFile; productRef = 7A4A9DDB27B2127800633E0C /* SQLite */; };
+		7A61944F27B23E24000655D2 /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = 7A61944E27B23E24000655D2 /* ComposableArchitecture */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -76,6 +78,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7A61944F27B23E24000655D2 /* ComposableArchitecture in Frameworks */,
 				7A0EC7FC279FFD03005501F2 /* XCCleanerKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -84,6 +87,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7A4A9DDC27B2127800633E0C /* SQLite in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -105,6 +109,7 @@
 				7A0EC7E8279FFD03005501F2 /* XCCleanerKit */,
 				7A0EC7F6279FFD03005501F2 /* XCCleanerKitTests */,
 				7A0EC7D1279FFCCE005501F2 /* Products */,
+				7A61944D27B23E24000655D2 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -155,6 +160,13 @@
 			path = XCCleanerKitTests;
 			sourceTree = "<group>";
 		};
+		7A61944D27B23E24000655D2 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -184,6 +196,9 @@
 				7A0EC7FB279FFD03005501F2 /* PBXTargetDependency */,
 			);
 			name = XCCleaner;
+			packageProductDependencies = (
+				7A61944E27B23E24000655D2 /* ComposableArchitecture */,
+			);
 			productName = XCCleaner;
 			productReference = 7A0EC7D0279FFCCE005501F2 /* XCCleaner.app */;
 			productType = "com.apple.product-type.application";
@@ -202,6 +217,9 @@
 			dependencies = (
 			);
 			name = XCCleanerKit;
+			packageProductDependencies = (
+				7A4A9DDB27B2127800633E0C /* SQLite */,
+			);
 			productName = XCCleanerKit;
 			productReference = 7A0EC7E7279FFD03005501F2 /* XCCleanerKit.framework */;
 			productType = "com.apple.product-type.framework";
@@ -256,6 +274,11 @@
 				Base,
 			);
 			mainGroup = 7A0EC7C7279FFCCE005501F2;
+			packageReferences = (
+				7A4A9DDA27B2127800633E0C /* XCRemoteSwiftPackageReference "SQLite.swift" */,
+				7A61944B27B21BAB000655D2 /* XCRemoteSwiftPackageReference "combine-schedulers" */,
+				7A61944C27B23C5B000655D2 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */,
+			);
 			productRefGroup = 7A0EC7D1279FFCCE005501F2 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -649,6 +672,46 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		7A4A9DDA27B2127800633E0C /* XCRemoteSwiftPackageReference "SQLite.swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/stephencelis/SQLite.swift.git";
+			requirement = {
+				kind = exactVersion;
+				version = 0.13.2;
+			};
+		};
+		7A61944B27B21BAB000655D2 /* XCRemoteSwiftPackageReference "combine-schedulers" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/pointfreeco/combine-schedulers.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.5.3;
+			};
+		};
+		7A61944C27B23C5B000655D2 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/pointfreeco/swift-composable-architecture.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.33.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		7A4A9DDB27B2127800633E0C /* SQLite */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7A4A9DDA27B2127800633E0C /* XCRemoteSwiftPackageReference "SQLite.swift" */;
+			productName = SQLite;
+		};
+		7A61944E27B23E24000655D2 /* ComposableArchitecture */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7A61944C27B23C5B000655D2 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */;
+			productName = ComposableArchitecture;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 7A0EC7C8279FFCCE005501F2 /* Project object */;
 }
