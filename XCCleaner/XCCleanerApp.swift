@@ -6,12 +6,20 @@
 //
 
 import SwiftUI
+import ComposableArchitecture
 
 @main
 struct XCCleanerApp: App {
     var body: some Scene {
-        WindowGroup {
-            ContentView()
+        WindowGroup<ContentView> {
+            ContentView(
+                store: Store(
+                    initialState: AppState(),
+                    reducer: appReducer,
+                    environment: AppEnvironment()
+                )
+            )
         }
+        .windowToolbarStyle(UnifiedWindowToolbarStyle(showsTitle: true))
     }
 }
