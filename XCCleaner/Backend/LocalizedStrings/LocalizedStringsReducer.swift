@@ -17,10 +17,17 @@ let localizedStringsReducer = Reducer<LocalizedStringsState, LocalizedStringsAct
         state.selectLocalizedStrings(strings)
         return .none
     case .selectedKey(let value):
-        state.selectKey(value)
+        state.selectedKey = value
         return .none
-    case .updateKey(let newValue, let oldKey):
-        
+    case .write(let strings):
+        strings.synchronize()
+        return .none
+    case .updateKey(let newKey, let oldKey):
+        guard let strings = state.selectedStrings else {
+            return .none
+        }
+        state.cleaner?.updateLocalizedStrings(newKey: newKey, oldKey: oldKey, for: strings)
+        state.updateCleaner(state.cleaner)
         return .none
     case .deleteKey(let key):
         
@@ -31,11 +38,17 @@ let localizedStringsReducer = Reducer<LocalizedStringsState, LocalizedStringsAct
         return Effect<XCCleaner, Error>.task {
             cleaner.updateLocalizedStrings(newValue: newValue, for: strings, key: key)
             return cleaner
-        }.catchToEffect(LocalizedStringsAction.updateValueResponse)
+        }
+        .receive(on: AnySchedulerOf<DispatchQueue>.main)
+        .catchToEffect(LocalizedStringsAction.updateValueResponse)
     case .updateValueResponse(let .success(response)):
         state.updateCleaner(response)
         return .none
     case .updateValueResponse(.failure):
+        return .none
+        
+    case .deleteValue(let value):
+        
         return .none
         
     case .binding:

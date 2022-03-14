@@ -14,14 +14,14 @@ struct AppState: Equatable {
     
     var localizedStrings = LocalizedStringsState()
     
-    var cleaner: XCCleaner?
+    var xcassets = XcassetsState()
+    
+    var cleaner: XCCleaner? {
+        didSet {
+            localizedStrings.cleaner = cleaner
+            xcassets.cleaner = cleaner
+        }
+    }
     
     var progress: Progress?
-}
-
-extension AppState {
-    mutating func setCleaner(_ cleaner: XCCleaner?) {
-        self.cleaner = cleaner
-        localizedStrings.updateCleaner(cleaner)
-    }
 }

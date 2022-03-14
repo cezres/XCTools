@@ -20,7 +20,7 @@ struct StringsFileMatchRule: TextMatcheRule {
             name: file.url.lastPathComponent,
             directory: file.url.deletingLastPathComponent().deletingLastPathComponent(),
             language: file.url.deletingLastPathComponent().lastPathComponent,
-            strings: StringsFile.loadKeyValues(url: file.url)
+            keyValues: StringsFile.loadKeyValues(url: file.url)
         )
     }
 }

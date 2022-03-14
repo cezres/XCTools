@@ -12,6 +12,7 @@ import XCCleanerKit
 enum AppAction {
     case close
     case localizedString(LocalizedStringsAction)
+    case xcassets(XcassetsAction)
     
     case loadProject(URL?)
     case loadProjectResponse(Result<XCCleaner, Error>)

@@ -14,7 +14,7 @@ let appReducer = Reducer<AppState, AppAction, AppEnvironment>.combine(
         switch action {
         case .close:
             state.project = nil
-            state.setCleaner(nil)
+            state.cleaner = nil
             return .none
         case .loadProject(let url):
             state.project = url
@@ -27,7 +27,7 @@ let appReducer = Reducer<AppState, AppAction, AppEnvironment>.combine(
                 return .none
             }
         case let .loadProjectResponse(.success(response)):
-            state.setCleaner(response)
+            state.cleaner = response
             state.progress = nil
             return .none
         case .loadProjectResponse(.failure):
@@ -42,7 +42,10 @@ let appReducer = Reducer<AppState, AppAction, AppEnvironment>.combine(
         environment: { value in
             return .init()
         }
-    )
+    ),
+    xcassetsReducer.pullback(state: \.xcassets, action: /AppAction.xcassets, environment: { value in
+        return .init()
+    })
 )
 
 extension XCCleaner {

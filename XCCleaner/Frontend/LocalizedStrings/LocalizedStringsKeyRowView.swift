@@ -15,12 +15,8 @@ struct LocalizedStringsKeyRowView: View {
     let deleteAction: (_ value: String) -> Void
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 4) {
-            TextEditorView(text: value, foregroundColor: color, editAction: editAction, deleteAction: deleteAction)
-//            Text(value)
-//                .foregroundColor(color)
-        }
-        .padding(.vertical, 8)
+        TextEditorView(text: value, foregroundColor: color, editAction: editAction, deleteAction: deleteAction)
+//            .padding(.vertical, 8)
     }
 }
 

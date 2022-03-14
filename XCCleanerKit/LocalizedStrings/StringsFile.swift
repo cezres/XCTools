@@ -12,7 +12,7 @@ public struct StringsFile: Codable, Equatable {
     public let name: String
     public let directory: URL
     public let language: String
-    public let strings: [KeyValue]
+    public let keyValues: [KeyValue]
     
     public struct KeyValue: Codable {
         public let key: String
@@ -44,7 +44,7 @@ extension StringsFile {
         self.directory = url.deletingLastPathComponent().deletingLastPathComponent()
         self.name = url.lastPathComponent
         self.language = url.deletingLastPathComponent().lastPathComponent
-        self.strings = Self.loadKeyValues(url: url)
+        self.keyValues = Self.loadKeyValues(url: url)
     }
     
     init(directory: URL, name: String, language: String, strings: [KeyValue]) {
@@ -52,12 +52,16 @@ extension StringsFile {
         self.directory = directory
         self.name = name
         self.language = language
-        self.strings = strings
+        self.keyValues = strings
     }
     
-    func write() {
+    func loadKeyValues() -> [KeyValue] {
+        Self.loadKeyValues(url: url)
+    }
+    
+    func saveKeyValues(_ keyValues: [KeyValue]) {
         do {
-            let text = strings.reduce("", { $0 + "\($1.key) = \($1.value);\n" })
+            let text = keyValues.reduce("", { $0 + "\"\($1.key)\" = \"\($1.value)\";\n" })
             try text.data(using: .utf8)?.write(to: url)
         } catch {
             debugPrint(error)
@@ -73,11 +77,12 @@ extension StringsFile {
         let lines = text.components(separatedBy: "\n")
         return lines.compactMap { lineText in
             loadKeyValue(lineText: lineText)
-        }
+        }.sorted(by: { $0.key < $1.key })
     }
     
     public static func loadKeyValue(lineText: String) -> KeyValue? {
         guard let keyRange = findString(lineText, range: lineText.startIndex..<lineText.endIndex) else {
+            debugPrint(lineText)
             return nil
         }
         

@@ -13,6 +13,7 @@ public class XCCleaner: ObservableObject {
     public let progress: Progress
     @Published private(set) public var localizedStrings: [LocalizedStrings] = []
     @Published private(set) public var usedStrings: [String: [UsedString]] = [:]
+    public private(set) var xcassets: [Xcassets] = []
     
     public init(url: URL, progress: Progress) {
         self.url = url
@@ -21,11 +22,28 @@ public class XCCleaner: ObservableObject {
     
     public func load() async {
         // Load file urls
-        let urls = FileManager.default.filter(types: [.strings, .swift], at: url)
-        
-        self.progress.resume()
-        
+        let urls = FileManager.default.filter(types: [.strings, .swift, .storyboard, .xcassets], at: url)
         self.progress.totalUnitCount = Int64(urls.map { $0.value.count }.reduce(0, { $0 + $1 }))
+        
+        // Load xcassets
+        if let urls = urls[.xcassets], !urls.isEmpty {
+            xcassets = await withTaskGroup(of: Xcassets?.self, returning: [Xcassets].self) { group in
+                urls.forEach { url in
+                    group.addTask(priority: .medium) {
+                        let result = Xcassets(url: url)
+                        DispatchQueue.main.async {
+                            self.progress.localizedDescription = "Loading xcassets \(url.lastPathComponent)"
+                            self.progress.completedUnitCount += 1
+                        }
+                        return result
+                    }
+                }
+                return await group.compactMap { $0 }.reduce([], { $0 + [$1] })
+            }.sorted(by: {
+                $0.imagesets.count > $1.imagesets.count
+            })
+            print("xcassets: \(xcassets.count)")
+        }
         
         // Load LocalizedStrings
         if let urls = urls[.strings], !urls.isEmpty {            
@@ -43,8 +61,10 @@ public class XCCleaner: ObservableObject {
                 
                 let results = await group.compactMap {
                     $0
-                }.reduce([], { partialResult, stringsFile in
-                    partialResult + [stringsFile]
+                }.filter {
+                    !$0.keyValues.isEmpty
+                }.reduce([], {
+                    $0 + [$1]
                 })
                 return LocalizedStrings.createLocalizedStrings(with: results)
             }
@@ -52,30 +72,31 @@ public class XCCleaner: ObservableObject {
         }
         
         // Load UsedStrings
-        if let urls = urls[.swift] {
-            let rules: [UsedStringMatchRule] = [
-                .init(fileType: .swift, stringPatterns: ["\"(.*?)\""], stringTypeRules: [])
-            ]
-//            self.progress.totalUnitCount += Int64(urls.count)
-            
-            usedStrings = await withTaskGroup(of: [UsedString].self, returning: [String: [UsedString]].self, body: { group in
+        let rules: [UsedStringMatchRule] = [
+            .init(fileType: .swift, stringPatterns: ["\"(.*?)\""], stringTypeRules: []),
+            .init(fileType: .storyboard, stringPatterns: ["\"(.*?)\""], stringTypeRules: []),
+        ]
+        var useds: [UsedString] = []
+        for rule in rules {
+            guard let urls = urls[rule.fileType], !urls.isEmpty else {
+                continue
+            }
+            useds += await withTaskGroup(of: [UsedString].self, returning: [UsedString].self, body: { group in
                 urls.forEach { url in
                     group.addTask {
-                        let result = TextFile(url: url)?.matches(rules: rules) ?? []
+                        let result = TextFile(url: url)?.matches(rule: rule) ?? []
                         DispatchQueue.main.async {
                             self.progress.localizedDescription = "Loading used strings \(url.lastPathComponent)"
                             self.progress.completedUnitCount += 1
                         }
-                        
-                        return result.flatMap { $0 }
+                        return result
                     }
                 }
-                
-                let result = await group.reduce([], { $0 + $1 })
-                return result.toDictionary(keyPath: \.string)
+                return await group.reduce([], { $0 + $1 })
             })
-            self.progress.localizedDescription = "Loading used strings is done"
+            usedStrings = useds.toDictionary(keyPath: \.string)
         }
+        self.progress.localizedDescription = "Loading used strings is done"
         
         self.progress.localizedDescription = "Loading project is done"
     }
@@ -88,37 +109,37 @@ extension XCCleaner: Equatable {
 }
 
 extension XCCleaner {
-    public func updateLocalizedStrings(newKey: LocalizedStrings.Key, for strings: LocalizedStrings) {
+    public func updateLocalizedStrings(newKey: LocalizedStrings.Key, oldKey: LocalizedStrings.Key, for strings: LocalizedStrings) {
+        guard let stringsIndex = localizedStrings.firstIndex(where: { $0.name == strings.name && $0.directory == strings.directory }) else {
+            return
+        }
+        /// Update Localezed Strings
+        localizedStrings[stringsIndex].updateKey(newKey: newKey, oldKey: oldKey)
         
+        /// Update Used Strings
+        if let useds = usedStrings[oldKey] {
+            usedStrings[newKey] = useds.map { $0.update(string: newKey) }
+            usedStrings[oldKey] = nil
+        }
     }
     
     public func updateLocalizedStrings(newValue: LocalizedStrings.Value, for strings: LocalizedStrings, key: LocalizedStrings.Key) {
         guard let stringsIndex = localizedStrings.firstIndex(where: { $0.name == strings.name && $0.directory == strings.directory }) else {
             return
         }
-        var newStrings = localizedStrings[stringsIndex].strings
-        newStrings[key] = newStrings[key]?.map { value in
-            value.language == newValue.language ? newValue : value
+        localizedStrings[stringsIndex].updateValue(newValue: newValue, for: key)
+    }
+    
+    public func removeLocalizedStrings(value: LocalizedStrings.Value, for strings: LocalizedStrings, key: LocalizedStrings.Key) {
+        
+    }
+}
+
+extension XCCleaner {
+    public func removeImageset(_ imageset: Imageset, for xcassets: Xcassets) {
+        guard let xcassetsIndex = self.xcassets.firstIndex(where: { $0.url == xcassets.url }) else {
+            return
         }
-        
-        localizedStrings[stringsIndex] = .init(
-            name: strings.name,
-            directory: strings.directory,
-            files: strings.files,
-            strings: newStrings
-        )
-        
-        StringsFile(
-            directory: strings.directory,
-            name: strings.name,
-            language: newValue.language,
-            strings: localizedStrings[stringsIndex].strings.compactMap { (key, value) -> StringsFile.KeyValue? in
-                if let value = value.first(where: { $0.language == newValue.language })?.string {
-                    return .init(key: key, value: value)
-                } else {
-                    return nil
-                }
-            }.sorted(by: { $0.key < $1.key })
-        ).write()
+        self.xcassets[xcassetsIndex].removeImageset(imageset)
     }
 }

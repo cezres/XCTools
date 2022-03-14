@@ -42,11 +42,18 @@ struct OpenFileSelector: View {
                 }
                 self.url = url
             } label: {
-                Text(title)
-                    .foregroundColor(.white)
-                    .padding(.horizontal, 16)
-                    .padding(.vertical, 8)
-                    .background(.blue)
+                if #available(macOS 12.0, *) {
+                    Text(title)
+                        .foregroundColor(.white)
+                        .padding(.horizontal, 16)
+                        .padding(.vertical, 8)
+                        .background(.blue)
+                } else {
+                    Text(title)
+                        .foregroundColor(.white)
+                        .padding(.horizontal, 16)
+                        .padding(.vertical, 8)
+                }
             }
             .buttonStyle(.borderless)
             .cornerRadius(8)

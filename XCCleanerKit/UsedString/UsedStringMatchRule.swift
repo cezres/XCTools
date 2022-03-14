@@ -22,7 +22,17 @@ struct UsedStringMatchRule: TextMatcheRule {
         return stringPatterns.flatMap { pattern -> [NSRange] in
             do {
                 let reg = try NSRegularExpression(pattern: pattern, options: .caseInsensitive)
-                return reg.matches(in: file.text, options: [], range: .init(location: 0, length: file.text.count)).map { $0.range }
+                let ranges = reg.matches(in: file.text, options: [], range: .init(location: 0, length: file.text.count)).map {
+                    $0.range
+                }.filter {
+                    $0.length > 0
+                }
+                if ranges.count > 2000 {
+                    debugPrint("\(file.url.lastPathComponent) - \(ranges.count)")
+                    return []
+                } else {
+                    return ranges
+                }
             } catch {
                 debugPrint(error)
                 return []

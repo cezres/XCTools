@@ -18,9 +18,14 @@ enum LocalizedStringsAction: BindableAction {
     
     case binding(BindingAction<LocalizedStringsState>)
     
-    case updateKey(newValue: String, oldKey: String)
-    case deleteKey(key: String)
+    case write(strings: LocalizedStrings)
+    
+    case updateKey(newKey: String, oldKey: String)
+    
+    case deleteKey(key: LocalizedStrings.Key)
     
     case updateValue(newValue: LocalizedStrings.Value, oldValue: LocalizedStrings.Value)
     case updateValueResponse(Result<XCCleaner, Error>)
+    
+    case deleteValue(value: LocalizedStrings.Value)
 }

@@ -19,6 +19,9 @@ struct LocalizedStringsFileRowView: View {
             Text(stringsFile.url.path)
         }
         .padding(.vertical, 8)
+        .onTapGesture(count: 2) {
+            CommandLineTool.openFile(stringsFile.url)
+        }
     }
 }
 

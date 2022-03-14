@@ -15,18 +15,17 @@ struct ContentView: View {
     var navigationView: some View {
         NavigationView {
             List {
-//                Section("Clear") {
-                    NavigationLink {
-                        LocalizableStringsPage(store: store.scope(state: \.localizedStrings, action: AppAction.localizedString))
-                    } label: {
-                        Text("Localizable.strings")
-                    }
-                    NavigationLink {
-                        
-                    } label: {
-                        Text("Assets.xcassets")
-                    }
-//                }
+                NavigationLink {
+                    LocalizableStringsPage(store: store.scope(state: \.localizedStrings, action: AppAction.localizedString))
+                } label: {
+                    Text("strings")
+                }
+            
+                NavigationLink {
+                    XcassetsPage(store: store.scope(state: \.xcassets, action: AppAction.xcassets))
+                } label: {
+                    Text("xcassets")
+                }
             }
             .listStyle(SidebarListStyle())
             .frame(minWidth: 160)
@@ -44,7 +43,7 @@ struct ContentView: View {
                             if let progress = viewStore.progress {
                                 ProgressView(progress)
                                     .progressViewStyle(LinearProgressViewStyle())
-                                    .frame(width: 240, height: 30, alignment: .trailing)
+                                    .frame(width: 300, height: 30, alignment: .trailing)
                             }
                         }
                         ToolbarItem {

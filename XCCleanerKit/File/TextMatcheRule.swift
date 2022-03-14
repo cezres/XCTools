@@ -24,7 +24,7 @@ public extension TextMatcheRule {
 extension TextFile {
     func matches<Rule: TextMatcheRule>(rule: Rule) -> Rule.Result {
         let reuseIdentifier = (rule.identifier + url.path).md5
-        let differenceIdentifier = url.dataRepresentation.description.md5
+        let differenceIdentifier = fileModificationDate.description.md5 
         if let result: Rule.Result = Database.default.load(reuseIdentifier: reuseIdentifier, differenceIdentifier: differenceIdentifier) {
 //            debugPrint("matches loaded from caches: \(url.lastPathComponent) - \(rule.identifier)")
             return result

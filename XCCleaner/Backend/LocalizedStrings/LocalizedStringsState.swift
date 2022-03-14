@@ -17,11 +17,34 @@ struct LocalizedStringsState: Equatable {
     var files: [StringsFile] = []
     
     var selectedStrings: LocalizedStrings?
-    var selectedKey: LocalizedStrings.Key?
+    var selectedKey: LocalizedStrings.Key? {
+        didSet {
+            if let key = selectedKey {
+                values = selectedStrings?.strings[key] ?? []
+                useds = cleaner?.usedStrings[key] ?? []
+            } else {
+                values = []
+                useds = []
+            }
+        }
+    }
     
-    var cleaner: XCCleaner?
-    
-    init() {
+    var cleaner: XCCleaner? {
+        didSet {
+            guard let cleaner = cleaner else {
+                strings = []
+                selectLocalizedStrings(nil)
+                return
+            }
+            
+            strings = cleaner.localizedStrings.sorted(by: { $0.strings.count > $1.strings.count })
+            
+            if let selectedStrings = selectedStrings, let strings = cleaner.localizedStrings.first(where: { $0.name == selectedStrings.name && $0.directory == selectedStrings.directory }) {
+                selectLocalizedStrings(strings)
+            } else {
+                selectLocalizedStrings(strings.first)
+            }
+        }
     }
 }
 
@@ -37,8 +60,8 @@ extension LocalizedStringsState {
         
         strings = cleaner.localizedStrings.sorted(by: { $0.strings.count > $1.strings.count })
         
-        if let selectedStrings = selectedStrings, cleaner.localizedStrings.contains(where: { $0.name == selectedStrings.name && $0.directory == selectedStrings.directory }) {
-            selectLocalizedStrings(selectedStrings)
+        if let selectedStrings = selectedStrings, let strings = cleaner.localizedStrings.first(where: { $0.name == selectedStrings.name && $0.directory == selectedStrings.directory }) {
+            selectLocalizedStrings(strings)
         } else {
             selectLocalizedStrings(strings.first)
         }
@@ -50,7 +73,7 @@ extension LocalizedStringsState {
         guard let selectedStrings = selectedStrings else {
             keys = []
             files = []
-            selectKey(nil)
+            selectedKey = nil
             return
         }
         
@@ -58,21 +81,9 @@ extension LocalizedStringsState {
         files = selectedStrings.files
         
         if let selectedKey = selectedKey, keys.contains(selectedKey) {
-            selectKey(selectedKey)
+            self.selectedKey = selectedKey
         } else {
-            selectKey(keys.first)
-        }
-    }
-    
-    mutating func selectKey(_ key: LocalizedStrings.Key?) {
-        selectedKey = key
-        
-        if let key = key {
-            values = selectedStrings?.strings[key] ?? []
-            useds = cleaner?.usedStrings[key] ?? []
-        } else {
-            values = []
-            useds = []
+            self.selectedKey = keys.first
         }
     }
 }
