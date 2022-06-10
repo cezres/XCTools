@@ -19,14 +19,10 @@ struct XcassetsImageRowView: View {
                     .frame(maxHeight: min(100, image.size.height))
                     .background(Color(red: 240/255.0, green: 240/255.0, blue: 240/255.0))
                     .border(.gray, width: 1)
-//                    .onTapGesture(count: 2) {
-//                        CommandLineTool.openFile(url.deletingLastPathComponent())
-//                    }
-                
-                Text("\(Int(image.size.width))x\(Int(image.size.height)) @\(cgImage.width / Int(image.size.width))x")
+                Text("\(cgImage.width)x\(cgImage.height)")
                     .font(.subheadline)
                     .foregroundColor(.gray)
-                Text("\(data.count) 字节")
+                Text("\(data.count) Bytes")
                     .font(.subheadline)
                     .foregroundColor(.gray)
             }

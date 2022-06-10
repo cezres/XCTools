@@ -34,10 +34,12 @@ let xcassetsReducer = Reducer<XcassetsState, XcassetsAction, AppEnvironment>.ini
     case .selectedImageset(let imageset):
         state.selectedImageset = imageset
         return .none
-    case .updater(let .success(response)):
-        response(&state)
+    case .updater(let result):
+        if case .success(let updater) = result {
+            updater(&state)
+        }
         return .none
-    case .updater(.failure):
+    default:
         return .none
     }
 }

@@ -12,16 +12,22 @@ import XCCleanerKit
 struct AppState: Equatable {
     @BindableState var project: URL?
     
-    var localizedStrings = LocalizedStringsState()
+    var strings = LocalizedStringsState()
     
     var xcassets = XcassetsState()
     
+    var compress = CompressState()
+    
     var cleaner: XCCleaner? {
         didSet {
-            localizedStrings.cleaner = cleaner
+            strings.cleaner = cleaner
             xcassets.cleaner = cleaner
         }
     }
     
     var progress: Progress?
+    
+    var isActiveStrings = true
+    var isActiveXcassets = false
+    var isActiveComoress = false
 }

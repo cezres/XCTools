@@ -18,4 +18,6 @@ enum XcassetsAction {
     
     case removeImageset(Imageset)
     case renameImageset(name: String, imageset: Imageset)
+    
+    case compressXcassets(Xcassets)
 }

@@ -28,6 +28,11 @@
 		7A37A90027DA63820038DF15 /* XcassetsRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A37A8FF27DA63820038DF15 /* XcassetsRowView.swift */; };
 		7A37A90227DA65080038DF15 /* XcassetsImagesetRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A37A90127DA65080038DF15 /* XcassetsImagesetRowView.swift */; };
 		7A37A92527DAF2D30038DF15 /* XcassetsImageRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A37A92427DAF2D30038DF15 /* XcassetsImageRowView.swift */; };
+		7A37A94727DF2F130038DF15 /* SettingsPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A37A94627DF2F130038DF15 /* SettingsPage.swift */; };
+		7A37A94A27DF31280038DF15 /* CompressPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A37A94927DF31280038DF15 /* CompressPage.swift */; };
+		7A37A94D27DF341E0038DF15 /* CompressState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A37A94C27DF341E0038DF15 /* CompressState.swift */; };
+		7A37A94F27DF34E50038DF15 /* CompressAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A37A94E27DF34E50038DF15 /* CompressAction.swift */; };
+		7A37A95127DF34F00038DF15 /* CompressReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A37A95027DF34F00038DF15 /* CompressReducer.swift */; };
 		7A4A9DDC27B2127800633E0C /* SQLite in Frameworks */ = {isa = PBXBuildFile; productRef = 7A4A9DDB27B2127800633E0C /* SQLite */; };
 		7A61944F27B23E24000655D2 /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = 7A61944E27B23E24000655D2 /* ComposableArchitecture */; };
 		7A61945227B25A67000655D2 /* RangeExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A61945127B25A67000655D2 /* RangeExtensions.swift */; };
@@ -140,6 +145,11 @@
 		7A37A8FF27DA63820038DF15 /* XcassetsRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XcassetsRowView.swift; sourceTree = "<group>"; };
 		7A37A90127DA65080038DF15 /* XcassetsImagesetRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XcassetsImagesetRowView.swift; sourceTree = "<group>"; };
 		7A37A92427DAF2D30038DF15 /* XcassetsImageRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XcassetsImageRowView.swift; sourceTree = "<group>"; };
+		7A37A94627DF2F130038DF15 /* SettingsPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPage.swift; sourceTree = "<group>"; };
+		7A37A94927DF31280038DF15 /* CompressPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompressPage.swift; sourceTree = "<group>"; };
+		7A37A94C27DF341E0038DF15 /* CompressState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompressState.swift; sourceTree = "<group>"; };
+		7A37A94E27DF34E50038DF15 /* CompressAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompressAction.swift; sourceTree = "<group>"; };
+		7A37A95027DF34F00038DF15 /* CompressReducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompressReducer.swift; sourceTree = "<group>"; };
 		7A61945127B25A67000655D2 /* RangeExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RangeExtensions.swift; sourceTree = "<group>"; };
 		7A61945327B25A7E000655D2 /* DataExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataExtensions.swift; sourceTree = "<group>"; };
 		7A61945527B25A9B000655D2 /* StringExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtensions.swift; sourceTree = "<group>"; };
@@ -322,6 +332,32 @@
 			path = Xcassets;
 			sourceTree = "<group>";
 		};
+		7A37A94527DF2F010038DF15 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				7A37A94627DF2F130038DF15 /* SettingsPage.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		7A37A94827DF30F50038DF15 /* Compress */ = {
+			isa = PBXGroup;
+			children = (
+				7A37A94927DF31280038DF15 /* CompressPage.swift */,
+			);
+			path = Compress;
+			sourceTree = "<group>";
+		};
+		7A37A94B27DF33F10038DF15 /* Compress */ = {
+			isa = PBXGroup;
+			children = (
+				7A37A94C27DF341E0038DF15 /* CompressState.swift */,
+				7A37A94E27DF34E50038DF15 /* CompressAction.swift */,
+				7A37A95027DF34F00038DF15 /* CompressReducer.swift */,
+			);
+			path = Compress;
+			sourceTree = "<group>";
+		};
 		7A61944D27B23E24000655D2 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -377,6 +413,7 @@
 				7A61949A27B35CA5000655D2 /* Common */,
 				7A61948827B2722F000655D2 /* LocalizedStrings */,
 				7A37A8F827D9FDDB0038DF15 /* Xcassets */,
+				7A37A94B27DF33F10038DF15 /* Compress */,
 				7A61948627B271E7000655D2 /* AppEnvironment.swift */,
 				7A61948427B2719B000655D2 /* AppState.swift */,
 				7A61948B27B27374000655D2 /* AppAction.swift */,
@@ -429,6 +466,8 @@
 				7A61949127B27940000655D2 /* Common */,
 				7A61948A27B272A1000655D2 /* LocalizedStrings */,
 				7A37A8F527D9FCC00038DF15 /* Xcassets */,
+				7A37A94827DF30F50038DF15 /* Compress */,
+				7A37A94527DF2F010038DF15 /* Settings */,
 				7A0EC7D5279FFCCE005501F2 /* ContentView.swift */,
 			);
 			path = Frontend;
@@ -696,15 +735,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7A37A94A27DF31280038DF15 /* CompressPage.swift in Sources */,
 				7A37A90227DA65080038DF15 /* XcassetsImagesetRowView.swift in Sources */,
 				7AEB1AE527C60FEC009E2DF6 /* LocalizedStringsKeyRowView.swift in Sources */,
+				7A37A94D27DF341E0038DF15 /* CompressState.swift in Sources */,
 				7AEB1AF827CC6B33009E2DF6 /* TextEditorView.swift in Sources */,
 				7A61948E27B275AB000655D2 /* AppReducer.swift in Sources */,
 				7A61948527B2719B000655D2 /* AppState.swift in Sources */,
 				7A61949527B27D5A000655D2 /* LocalizedStringsState.swift in Sources */,
 				7A37A8FA27D9FDEC0038DF15 /* XcassetsState.swift in Sources */,
+				7A37A94F27DF34E50038DF15 /* CompressAction.swift in Sources */,
 				7A61949027B2790C000655D2 /* LocalizableStringsPage.swift in Sources */,
 				7AEB1AF327C8C42A009E2DF6 /* CommandLineTool.swift in Sources */,
+				7A37A94727DF2F130038DF15 /* SettingsPage.swift in Sources */,
 				7AEB1AE327C6092F009E2DF6 /* LocalizedStringsFileRowView.swift in Sources */,
 				7AEB1AE727C610DB009E2DF6 /* String+Identifiable.swift in Sources */,
 				7A61949727B2D931000655D2 /* LocalizedStringsAction.swift in Sources */,
@@ -722,6 +765,7 @@
 				7A37A8F727D9FCCE0038DF15 /* XcassetsPage.swift in Sources */,
 				7AEB1AE927C7247E009E2DF6 /* LocalizedStringsValueRowView.swift in Sources */,
 				7A61948C27B27374000655D2 /* AppAction.swift in Sources */,
+				7A37A95127DF34F00038DF15 /* CompressReducer.swift in Sources */,
 				7A0EC7D6279FFCCE005501F2 /* ContentView.swift in Sources */,
 				7A0EC7D4279FFCCE005501F2 /* XCCleanerApp.swift in Sources */,
 				7A37A8FC27D9FDF60038DF15 /* XcassetsAction.swift in Sources */,

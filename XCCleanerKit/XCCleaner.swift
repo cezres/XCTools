@@ -39,10 +39,11 @@ public class XCCleaner: ObservableObject {
                     }
                 }
                 return await group.compactMap { $0 }.reduce([], { $0 + [$1] })
+            }.filter {
+                !$0.imagesets.isEmpty
             }.sorted(by: {
                 $0.imagesets.count > $1.imagesets.count
             })
-            print("xcassets: \(xcassets.count)")
         }
         
         // Load LocalizedStrings

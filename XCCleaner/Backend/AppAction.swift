@@ -11,9 +11,14 @@ import XCCleanerKit
 
 enum AppAction {
     case close
-    case localizedString(LocalizedStringsAction)
+    case strings(LocalizedStringsAction)
     case xcassets(XcassetsAction)
+    case compress(CompressAction)
     
     case loadProject(URL?)
     case loadProjectResponse(Result<XCCleaner, Error>)
+    
+    case setIsActiveXcassets(Bool)
+    case setIsActiveComoress(Bool)
+    case setIsActiveStrings(Bool)
 }

@@ -22,8 +22,6 @@ struct LocalizableStringsPage: View {
     var body: some View {
         WithViewStore(store) { viewStore in
             HStack(spacing: 0) {
-//                    LocalizableStringsPage(store: store.scope(state: \.localizedStrings, action: AppAction.localizedString))
-//                    store.scope(state: \.strings)
                 ListView(
                     selection: viewStore.binding(get: \.selectedStrings, send: LocalizedStringsAction.selectedStrings),
                     title: "Strings",

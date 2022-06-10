@@ -15,12 +15,15 @@ struct XcassetsImagesetRowView: View {
     let deleteAction: (_ value: Imageset) -> Void
     
     var body: some View {
-        TextEditorView(text: value.name, foregroundColor: color, editAction: { newText, oldText in
+        TextEditorView(text: value.name, foregroundColor: color, contextMenuItems: [
+            .init(label: "Show In Finder", action: {
+                CommandLineTool.openFile(value.url)
+            })
+        ], editAction: { newText, oldText in
             editAction(newText, value)
         }, deleteAction: { text in
             deleteAction(value)
         })
-//            .padding(.vertical, 8)
     }
 }
 

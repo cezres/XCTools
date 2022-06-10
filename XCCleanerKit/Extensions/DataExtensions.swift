@@ -8,7 +8,7 @@
 import Foundation
 import CryptoKit
 
-extension Data {
+public extension Data {
     var md5: Data {
         var digest = Insecure.MD5()
         digest.update(data: self)

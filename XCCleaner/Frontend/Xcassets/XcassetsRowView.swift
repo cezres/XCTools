@@ -10,6 +10,7 @@ import XCCleanerKit
 
 struct XcassetsRowView: View {
     let value: Xcassets
+    let compress: (_ xcassets: Xcassets) -> Void
     
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
@@ -17,6 +18,11 @@ struct XcassetsRowView: View {
             Text(value.url.path)
                 .font(.subheadline)
                 .foregroundColor(.gray)
+        }
+        .contextMenu {
+            Button("Compress Imagesets") {
+                compress(value)
+            }
         }
         .padding(.vertical, 8)
     }

@@ -21,7 +21,9 @@ struct XcassetsPage: View {
                         title: "Xcassets",
                         data: viewStore.xcassets
                     ) {
-                        XcassetsRowView(value: $0)
+                        XcassetsRowView(value: $0) { xcassets in
+                            viewStore.send(.compressXcassets(xcassets))
+                        }
                     }
                     
                     ListView(

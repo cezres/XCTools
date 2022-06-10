@@ -15,16 +15,30 @@ struct ContentView: View {
     var navigationView: some View {
         NavigationView {
             List {
-                NavigationLink {
-                    LocalizableStringsPage(store: store.scope(state: \.localizedStrings, action: AppAction.localizedString))
-                } label: {
-                    Text("strings")
-                }
-            
-                NavigationLink {
-                    XcassetsPage(store: store.scope(state: \.xcassets, action: AppAction.xcassets))
-                } label: {
-                    Text("xcassets")
+                WithViewStore(store) { viewStore in
+                    NavigationLink(isActive: viewStore.binding(get: \.isActiveStrings, send: AppAction.setIsActiveStrings)) {
+                        LocalizableStringsPage(store: store.scope(state: \.strings, action: AppAction.strings))
+                    } label: {
+                        Text("Strings")
+                    }
+                
+                    NavigationLink(isActive: viewStore.binding(get: \.isActiveXcassets, send: AppAction.setIsActiveXcassets)) {
+                        XcassetsPage(store: store.scope(state: \.xcassets, action: AppAction.xcassets))
+                    } label: {
+                        Text("Xcassets")
+                    }
+                    
+                    NavigationLink(isActive: viewStore.binding(get: \.isActiveComoress, send: AppAction.setIsActiveComoress)) {
+                        CompressPage(store: store.scope(state: \.compress, action: AppAction.compress))
+                    } label: {
+                        Text("Compress")
+                    }
+                    
+                    NavigationLink {
+                        SettingsPage()
+                    } label: {
+                        Text("Settings")
+                    }
                 }
             }
             .listStyle(SidebarListStyle())

@@ -24,6 +24,15 @@ class DatabaseTests: XCTestCase {
         // Any test you write for XCTest can be annotated as throws and async.
         // Mark your test throws to produce an unexpected failure when your test encounters an uncaught error.
         // Mark your test async to allow awaiting for asynchronous code to complete. Check the results with assertions afterwards.
+        
+        let usedStrings = UsedString(value: "11", url: .init(fileURLWithPath: ""), lineNumber: 0, lineText: "22", type: .imageset)
+        
+        let mirror = Mirror(reflecting: usedStrings)
+        print(mirror)
+        for item in mirror.children {
+            print("\(item.label ?? "") \(item.value) \(type(of: item.value))")
+        }
+        
         let db = Database.inMemory
         
         db.save(value: 2233, forReuseIdentifier: "111", differenceIdentifier: "111")
